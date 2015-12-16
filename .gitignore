@@ -8,7 +8,7 @@
 /test/tmp/
 /test/version_tmp/
 /tmp/
-
+.DS_STORE
 ## Specific to RubyMotion:
 .dat*
 .repl_history
