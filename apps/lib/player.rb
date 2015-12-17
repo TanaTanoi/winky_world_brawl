@@ -13,6 +13,8 @@ class Player
     @window = window
     @controls = controls
 
+    @direction = 0 # 0 => up, 1 => right, 2 => down, 3 => left
+
     @x = window.width / 2
     @y = window.height / 2
     @speed = INITIAL_SPEED
@@ -21,7 +23,7 @@ class Player
   end
 
   def draw
-    @player_image.draw_rot(@x, @y, ZOrder::Player, 0)
+    @player_image.draw_rot(@x, @y, ZOrder::Player, @direction * 90)
   end
 
   def update
@@ -41,24 +43,32 @@ class Player
     if @x > 0 + @x_offset
       @x -= @speed
     end
+
+    @direction = 3
   end
 
   def move_right
     if @x < @window.width - @x_offset
       @x += @speed
     end
+
+    @direction = 1
   end
 
   def move_up
     if @y > 0 + @y_offset
       @y -= @speed
     end
+
+    @direction = 0
   end
 
   def move_down
     if @y < @window.height - @y_offset
       @y += @speed
     end
+
+    @direction = 2
   end
 end
 
