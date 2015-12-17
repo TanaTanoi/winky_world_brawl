@@ -69,7 +69,9 @@ class Game < Gosu::Window
   end
 
   def draw_laser(vec_a, vec_b, color_a = GREEN, color_b = GREEN)
-    Gosu::draw_line(vec_a.x, vec_a.y, color_a, vec_b.x, vec_b.y, color_b, ZOrder::Player)
+    if vec_a.near?(vec_b, 200)
+      Gosu::draw_line(vec_a.x, vec_a.y, color_a, vec_b.x, vec_b.y, color_b, ZOrder::Player)
+    end
   end
 
   def draw
