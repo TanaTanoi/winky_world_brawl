@@ -33,7 +33,9 @@ class Game < Gosu::Window
     @options = ["New Game", "Credits", "Quit"]
     @selected = 0
 
-    @player = Player.new(self)
+    test_controls = {:left => Gosu::KbLeft, :right => Gosu::KbRight, :up => Gosu::KbUp, :down => Gosu::KbDown }
+
+    @player = Player.new(window: self, controls: test_controls)
 
     @counter = 0
 

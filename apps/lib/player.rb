@@ -8,9 +8,10 @@ class Player
     @player_image ||= Gosu::Image.new(window, 'assets/sprites/player.png', false)
   end
 
-  def initialize(window)
+  def initialize(window: window, controls: controls)
     @player_image = self.class.load_image(window)
     @window = window
+    @controls = controls
 
     @x = window.width / 2
     @y = window.height / 2
@@ -28,21 +29,25 @@ class Player
   end
 
   def move #TODO map of controls
-    if @window.button_down?(Gosu::KbLeft) || @window.button_down?(Gosu::GpLeft)
-      move_left
-    end
+    move_left if @window.button_down?(@controls[:left])
+    move_right if @window.button_down?(@controls[:right])
+    move_up if @window.button_down?(@controls[:up])
+    move_down if @window.button_down?(@controls[:down])
+    #if @window.button_down?(Gosu::KbLeft) || @window.button_down?(Gosu::GpLeft)
+      #move_left
+    #end
+##
+    #if @window.button_down?(Gosu::KbRight) || @window.button_down?(Gosu::GpRight)
+      #move_right
+    #end
+#
+    #if @window.button_down?(Gosu::KbUp) || @window.button_down?(Gosu::GpUp)
+      #move_up
+    #end
 
-    if @window.button_down?(Gosu::KbRight) || @window.button_down?(Gosu::GpRight)
-      move_right
-    end
-
-    if @window.button_down?(Gosu::KbUp) || @window.button_down?(Gosu::GpUp)
-      move_up
-    end
-
-    if @window.button_down?(Gosu::KbDown) || @window.button_down?(Gosu::GpDown)
-      move_down
-    end
+    #if @window.button_down?(Gosu::KbDown) || @window.button_down?(Gosu::GpDown)
+      #move_down
+    #end
   end
 
   private
