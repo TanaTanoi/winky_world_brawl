@@ -5,7 +5,7 @@ class Player
   attr_reader :speed, :x, :y
 
   def self.load_image(window)
-    @player_image ||= Gosu::Image.new(window, 'assets/sprites/player.png', false)
+    @player_image ||= Gosu::Image.new(window, SPRITE_LOCATION, false)
   end
 
   def initialize(window: window, controls: controls)
