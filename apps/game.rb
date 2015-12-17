@@ -20,7 +20,7 @@ class Game < Gosu::Window
 
   attr_reader :width, :height
   attr_accessor :space
-  def initialize(width: 1280, height: 720, fullscreen: true)
+  def initialize(width: 1280, height: 720, fullscreen: false)
     super(width, height, fullscreen)
     self.caption = GAME_NAME
 
