@@ -1,4 +1,3 @@
-require_relative 'apps/game_window'
+require_relative 'apps/game'
 
-window = GameWindow.new(width: 800, height: 600, fullscreen: true)
-window.show
+Game.new.show
