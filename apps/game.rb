@@ -119,8 +119,8 @@ class Game < Gosu::Window
 
   def initialize_players
     @players = [
-      Player.new(window: self, controls: PlayerControls::PLAYER1, pos: vec2(width/3, height/2)),
-      Player.new(window: self, controls: PlayerControls::PLAYER2, pos: vec2(width/2, height/2))
+      Player.new(window: self, controls: PlayerControls::PLAYER1, pos: vec2(width/3, height/2), id: 1),
+      Player.new(window: self, controls: PlayerControls::PLAYER2, pos: vec2(width/2, height/2), id: 2)
     ]
   end
 

@@ -4,16 +4,16 @@ class Player
 
   attr_reader :ragdoll
 
-  def self.load_images(window)
+  def self.load_images(window, id)
     [
-      @player_image ||= Gosu::Image.new(window, SPRITE_LOCATION + 'player.png', false),
-      @player_disabled_image ||= Gosu::Image.new(window, SPRITE_LOCATION + 'player_disabled.png', false)
+      @player_image = Gosu::Image.new(window, SPRITE_LOCATION + "player#{id}.png", false),
+      @player_disabled_image ||= Gosu::Image.new(window, SPRITE_LOCATION + "disabled.png", false)
     ]
   end
 
-  def initialize(window: window, controls: controls, pos: pos)
-    @player_image, @player_disabled_image = self.class.load_images(window)
-
+  def initialize(window: window, controls: controls, pos: pos, id: id)
+    @player_image, @disabled_image = self.class.load_images(window, id)
+    @id = id
     @window = window
     @controls = controls
 
@@ -23,10 +23,10 @@ class Player
   end
 
   def draw
+    draw_player(@player_image)
+
     if @disabled > 0
-      draw_player(@player_disabled_image)
-    else
-      draw_player(@player_image)
+      draw_player(@disabled_image)
     end
   end
 
