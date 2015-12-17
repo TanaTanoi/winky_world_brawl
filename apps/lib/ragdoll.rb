@@ -1,19 +1,12 @@
 class Ragdoll
   MOVE_AMOUNT = 5
   BODY_SIZE = 40
-  WHITE = Gosu::Color.argb(0xff_ffffff)
   BODY_MASS = 50
   BODY_INERTIA = 100
-  SPRITE_LOCATION  = 'assets/sprites/player.png'
 
   attr_accessor :shape, :body
 
-  def self.load_image(window)
-    @image ||= Gosu::Image.new(window, SPRITE_LOCATION, false)
-  end
-
-  def initialize(window, pos, image = self.class.load_image(window))
-    @image = image
+  def initialize(window, pos)
     @window = window
     @body = CP::Body.new(BODY_MASS, BODY_INERTIA)
     @body.p = pos
@@ -41,14 +34,6 @@ class Ragdoll
     mag = dir.cross(angle_dir)
     @body.a+= mag
     @body.w = 0
-  end
-
-  def draw
-    top_left, top_right, bottom_left, bottom_right = rotate
-
-    # Gotta draw things back to front because we're in space so that makes sense right?
-    @image.draw_as_quad(bottom_left.x, bottom_left.y, WHITE, bottom_right.x, bottom_right.y, WHITE,
-                              top_left.x, top_left.y, WHITE, top_right.x, top_right.y, WHITE, 1)
   end
 
   def rotate

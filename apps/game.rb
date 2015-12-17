@@ -59,7 +59,10 @@ class Game < Gosu::Window
   def update
     if @game_state == GameState::GAME
       @hill.update
-      @players.each(&:update)
+      @players.each do |player|
+        player.update
+        respawn_player(player) if out_of_bounds?(player)
+      end
       @space.step((1.0/60.0))
     end
   end
@@ -98,10 +101,6 @@ class Game < Gosu::Window
       when Gosu::KbReturn then select_option
       end
     end
-  end
-
-  def draw_rect(x1, y1, x2, y2, color = WHITE)
-    Gosu::draw_quad(x1, y1, color, x1, y2, color, x2, y2, color, x2, y1, color)
   end
 
   def draw_image_rect(x1, y1, x2, y2, image, z_index, color = WHITE)
@@ -146,5 +145,20 @@ class Game < Gosu::Window
     when "Credits" then puts "Credits"
     when "Quit" then close
     end
+  end
+
+  def out_of_bounds?(player)
+    player_position = player.ragdoll.body.p.to_a
+    player_x = player_position[0]
+    player_y = player_position[1]
+
+    player_x < 0 || player_x > @width || player_y < 0 || player_y > @height
+  end
+
+  def respawn_player(player)
+    player.ragdoll.body.p = vec2(@width/2, @height/2)
+    player.ragdoll.body.v = CP::Vec2::ZERO
+    player.ragdoll.body.a = 0
+    player.disable(200)
   end
 end

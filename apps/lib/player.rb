@@ -1,31 +1,57 @@
 class Player
-  SPRITE_LOCATION  = 'assets/sprites/player.png'
-  INITIAL_SPEED = 2
+  SPRITE_LOCATION  = 'assets/sprites/'
+  WHITE = Gosu::Color.argb(0xff_ffffff)
 
-  attr_reader :x, :y
+  attr_reader :ragdoll
 
-  def self.load_image(window)
-    @player_image ||= Gosu::Image.new(window, SPRITE_LOCATION, false)
+  def self.load_images(window)
+    [
+      @player_image ||= Gosu::Image.new(window, SPRITE_LOCATION + 'player.png', false),
+      @player_disabled_image ||= Gosu::Image.new(window, SPRITE_LOCATION + 'player_disabled.png', false)
+    ]
   end
 
   def initialize(window: window, controls: controls, pos: pos)
-    @player_image = self.class.load_image(window)
+    @player_image, @player_disabled_image = self.class.load_images(window)
+
     @window = window
     @controls = controls
+
+    @disabled = 0
 
     @ragdoll = Ragdoll.new(window, pos)
   end
 
   def draw
-    @ragdoll.draw
+    if @disabled > 0
+      draw_player(@player_disabled_image)
+    else
+      draw_player(@player_image)
+    end
   end
 
   def update
-    move
-    @ragdoll.update
+    if @disabled > 0
+      disabled_tick
+    else
+      move
+      @ragdoll.update
+    end
+  end
+
+  def disable(count)
+    @disabled += count
   end
 
   private
+
+  def draw_player(image)
+    top_left, top_right, bottom_left, bottom_right = @ragdoll.rotate
+
+    # Gotta draw things back to front because we're in space so that makes sense right?
+    image.draw_as_quad(bottom_left.x, bottom_left.y, WHITE, bottom_right.x, bottom_right.y, WHITE,
+                              top_left.x, top_left.y, WHITE, top_right.x, top_right.y, WHITE, 1)
+  end
 
   def move
     move_left if @window.button_down?(@controls[:left])
@@ -48,5 +74,9 @@ class Player
 
   def move_down
       @ragdoll.move_down
+  end
+
+  def disabled_tick
+    @disabled -= 1
   end
 end
