@@ -2,6 +2,11 @@ require 'gosu'
 require_relative 'lib/player'
 require_relative 'lib/zorder'
 
+module GameState
+  MENU = 0
+  GAME = 1
+end
+
 class Game < Gosu::Window
   GAME_NAME = 'Winky World Brawl'
 
@@ -22,7 +27,6 @@ class Game < Gosu::Window
     @width = width
     @height = height
     @fullscreen = fullscreen
-
     @text_x = @width / 2
     @text_y = (2 * height) / 3
     @text_gap = 50
@@ -39,18 +43,18 @@ class Game < Gosu::Window
 
     @counter = 0
 
-    @game_state = 0
+    @game_state = GameState::MENU
   end
 
   def update
-    if @game_state == 1
+    if @game_state == GameState::GAME
       @counter += 1
       @player.update
     end
   end
 
   def draw
-    if @game_state == 1
+    if @game_state == GameState::GAME
       @font.draw(@counter, 0, 0, ZOrder::UI )
       draw_image_rect(0, 0, @width, @height, @background_image, ZOrder::Background)
       @player.draw
@@ -70,7 +74,7 @@ class Game < Gosu::Window
       close
     end
 
-    if @game_state == 0
+    if @game_state == GameState::MENU
       case id
       when Gosu::KbDown then next_option
       when Gosu::KbUp then previous_option
@@ -114,7 +118,7 @@ class Game < Gosu::Window
 
   def select_option
     case @options[@selected]
-    when "New Game" then @game_state = 1
+    when "New Game" then @game_state = GameState::GAME
     when "Credits" then puts "Credits"
     when "Quit" then close
     end

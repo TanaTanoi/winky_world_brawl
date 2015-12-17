@@ -28,26 +28,11 @@ class Player
     move
   end
 
-  def move #TODO map of controls
+  def move
     move_left if @window.button_down?(@controls[:left])
     move_right if @window.button_down?(@controls[:right])
     move_up if @window.button_down?(@controls[:up])
     move_down if @window.button_down?(@controls[:down])
-    #if @window.button_down?(Gosu::KbLeft) || @window.button_down?(Gosu::GpLeft)
-      #move_left
-    #end
-##
-    #if @window.button_down?(Gosu::KbRight) || @window.button_down?(Gosu::GpRight)
-      #move_right
-    #end
-#
-    #if @window.button_down?(Gosu::KbUp) || @window.button_down?(Gosu::GpUp)
-      #move_up
-    #end
-
-    #if @window.button_down?(Gosu::KbDown) || @window.button_down?(Gosu::GpDown)
-      #move_down
-    #end
   end
 
   private
