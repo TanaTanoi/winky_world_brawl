@@ -7,6 +7,11 @@ module GameState
   GAME = 1
 end
 
+module PlayerControls
+  PLAYER1 = { :left => Gosu::KbLeft, :right => Gosu::KbRight, :up => Gosu::KbUp, :down => Gosu::KbDown }
+  PLAYER2 = { :left => Gosu::KbA, :right => Gosu::KbD, :up => Gosu::KbW, :down => Gosu::KbS }
+end
+
 class Game < Gosu::Window
   GAME_NAME = 'Winky World Brawl'
 
@@ -37,9 +42,8 @@ class Game < Gosu::Window
     @options = ["New Game", "Credits", "Quit"]
     @selected = 0
 
-    test_controls = {:left => Gosu::KbLeft, :right => Gosu::KbRight, :up => Gosu::KbUp, :down => Gosu::KbDown }
-
-    @player = Player.new(window: self, controls: test_controls)
+    @player = Player.new(window: self, controls: PlayerControls::PLAYER1)
+    @player2 = Player.new(window: self, controls: PlayerControls::PLAYER2)
 
     @counter = 0
 
@@ -50,6 +54,7 @@ class Game < Gosu::Window
     if @game_state == GameState::GAME
       @counter += 1
       @player.update
+      @player2.update
     end
   end
 
@@ -58,6 +63,7 @@ class Game < Gosu::Window
       @font.draw(@counter, 0, 0, ZOrder::UI )
       draw_image_rect(0, 0, @width, @height, @background_image, ZOrder::Background)
       @player.draw
+      @player2.draw
     else
       draw_image_rect(0, 0, @width, @height, @background_image, ZOrder::Background)
       @menu_logo.draw_rot(@width / 2, 120, ZOrder::UI, 0)
