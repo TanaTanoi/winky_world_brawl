@@ -13,6 +13,7 @@ class Game < Gosu::Window
 
   SELECTED_COLOR = 0xfff4cc00
   DEFAULT_COLOR = 0xffffffff
+  GREEN = Gosu::Color.argb(0xff_1fff56)
   WHITE = Gosu::Color.argb(0xff_ffffff)
   SCREEN_WIDTH = 1280
   SCREEN_HEIGHT = 720
@@ -67,6 +68,10 @@ class Game < Gosu::Window
     end
   end
 
+  def draw_laser(vec_a, vec_b, color_a = GREEN, color_b = GREEN)
+    Gosu::draw_line(vec_a.x, vec_a.y, color_a, vec_b.x, vec_b.y, color_b, ZOrder::Player)
+  end
+
   def draw
     @floor.draw
     @ceiling.draw
@@ -74,10 +79,13 @@ class Game < Gosu::Window
     @right_wall.draw
 
     if @game_state == GameState::GAME
-      @font.draw("Some Text", @text_x - @width / 8, 0, ZOrder::UI)
+      @font.draw("ESC to Quit", @text_x - @width / 8, 0, ZOrder::UI)
       draw_image_rect(0, 0, @width, @height, @background_image, ZOrder::Background)
       @hill.draw
-      @players.each(&:draw)
+      @players.each do |player|
+        draw_laser(player.ragdoll.body.p, @hill.p)
+        player.draw
+      end
     else
       draw_image_rect(0, 0, @width, @height, @background_image, ZOrder::Background)
       @menu_logo.draw_rot(@width / 2, 120, ZOrder::UI, 0)

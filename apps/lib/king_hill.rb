@@ -27,6 +27,10 @@ class KingHill
     @hill_image.draw_rot(@x, @y, ZOrder::Hill, 0)
   end
 
+  def p
+    vec2(@x,@y)
+  end
+
   private
 
   def initial_hill_position
