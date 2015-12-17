@@ -32,6 +32,6 @@ class Ragdoll
   end
 
   def move_by(vector = vec2(0,0))
-    @torso.body.v+=vector
+    @torso.body.v += vector
   end
 end
