@@ -1,6 +1,5 @@
 require 'gosu'
 require_relative 'lib/player'
-require_relative 'lib/ragdoll_player'
 require_relative 'lib/zorder'
 require_relative 'lib/gamestate'
 require_relative 'lib/playercontrols'
@@ -105,8 +104,8 @@ class Game < Gosu::Window
 
   def initialize_players
     @players = [
-      RagdollPlayer.new(window: self, controls: PlayerControls::PLAYER1, pos: vec2(width/3, height/2)),
-      RagdollPlayer.new(window: self, controls: PlayerControls::PLAYER2, pos: vec2(width/2, height/2))
+      Player.new(window: self, controls: PlayerControls::PLAYER1, pos: vec2(width/3, height/2)),
+      Player.new(window: self, controls: PlayerControls::PLAYER2, pos: vec2(width/2, height/2))
     ]
   end
 

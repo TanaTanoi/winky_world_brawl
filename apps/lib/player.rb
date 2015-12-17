@@ -1,6 +1,6 @@
 class Player
   SPRITE_LOCATION  = 'assets/sprites/player.png'
-  INITIAL_SPEED = 5
+  INITIAL_SPEED = 2
 
   attr_reader :speed, :x, :y
 
@@ -8,26 +8,33 @@ class Player
     @player_image ||= Gosu::Image.new(window, SPRITE_LOCATION, false)
   end
 
-  def initialize(window: window, controls: controls)
+  def initialize(window: window, controls: controls, pos: pos)
     @player_image = self.class.load_image(window)
     @window = window
     @controls = controls
+
+
+
 
     @direction = 0 # 0 => up, 1 => right, 2 => down, 3 => left
 
     @x = window.width / 2
     @y = window.height / 2
-    @speed = INITIAL_SPEED
-    @x_offset = @player_image.width / 2
-    @y_offset = @player_image.height / 2
+    #@x_offset = @player_image.width / 2
+    #@y_offset = @player_image.height / 2
+
+    @ragdoll = Ragdoll.new(window, pos)
   end
 
+
+
   def draw
-    @player_image.draw_rot(@x, @y, ZOrder::Player, @direction * 90)
+    @ragdoll.draw
   end
 
   def update
     move
+    @ragdoll.update
   end
 
   def move
@@ -40,34 +47,75 @@ class Player
   private
 
   def move_left
+    @ragdoll.move_left
+  end
+
+  def move_right
+      @ragdoll.move_right
+  end
+
+  def move_up
+      @ragdoll.move_up
+  end
+
+  def move_down
+      @ragdoll.move_down
+  end
+
+  def move_left1
     if @x > 0 + @x_offset
       @x -= @speed
+    end
+
+    if @direction == 3
+      @speed += 1
+    else
+      @speed = INITIAL_SPEED
     end
 
     @direction = 3
   end
 
-  def move_right
+  def move_right1
     if @x < @window.width - @x_offset
       @x += @speed
+    end
+
+    if @direction == 1
+      @speed += 1
+    else
+      @speed = INITIAL_SPEED
     end
 
     @direction = 1
   end
 
-  def move_up
+  def move_up1
     if @y > 0 + @y_offset
       @y -= @speed
+    end
+
+    if @direction == 0
+      @speed += 1
+    else
+      @speed = INITIAL_SPEED
     end
 
     @direction = 0
   end
 
-  def move_down
+  def move_down1
     if @y < @window.height - @y_offset
       @y += @speed
+    end
+
+    if @direction == 2
+      @speed += 1
+    else
+      @speed = INITIAL_SPEED
     end
 
     @direction = 2
   end
 end
+

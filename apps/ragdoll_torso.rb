@@ -5,8 +5,16 @@ class RagdollTorso
   WHITE = Gosu::Color.argb(0xff_ffffff)
   BODY_MASS = 50
   BODY_INERTIA = 100
+  SPRITE_LOCATION  = 'assets/sprites/player.png'
+
   attr_accessor :shape, :body
+
+  def self.load_image(window)
+    @torso_image ||= Gosu::Image.new(window, SPRITE_LOCATION, false)
+  end
+
   def initialize(window, pos = CP::Vec2::ZERO)
+    @torso_image = self.class.load_image(window)
     @window = window
     @color = Gosu::Color.argb(0xff_1fff56)
     @pos = pos
@@ -40,7 +48,7 @@ class RagdollTorso
 
   def draw
     top_left, top_right, bottom_left, bottom_right = self.rotate
-    Gosu::draw_quad(top_left.x, top_left.y, @color,
+    @torso_image.draw_as_quad(top_left.x, top_left.y, @color,
                       top_right.x, top_right.y, @color,
                       bottom_left.x, bottom_left.y, @color,
                       bottom_right.x, bottom_right.y, @color,
