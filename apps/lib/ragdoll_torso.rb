@@ -1,4 +1,5 @@
 require 'chipmunk'
+
 class RagdollTorso
   BODY_WIDTH = 40
   BODY_HEIGHT = 40
@@ -43,7 +44,6 @@ class RagdollTorso
     angle_dir = CP::Vec2.for_angle(@body.a)
     mag = dir.cross(angle_dir)
     @body.a+= mag
-
   end
 
   def draw
@@ -56,7 +56,6 @@ class RagdollTorso
   end
 
   def rotate
-
     half_diagonal = Math.sqrt(2) * (BODY_WIDTH)
     [-45, +45, -135, +135].collect do |angle|
        CP::Vec2.new(@body.p.x + Gosu::offset_x(@body.a.radians_to_gosu + angle,
@@ -64,7 +63,6 @@ class RagdollTorso
 
                     @body.p.y + Gosu::offset_y(@body.a.radians_to_gosu + angle,
                                                half_diagonal))
-
     end
   end
 end

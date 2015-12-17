@@ -1,10 +1,19 @@
 class Ragdoll
+  MOVE_AMOUNT = 5
+
   attr_accessor :torso
+
   def initialize(window, pos)
     @torso = RagdollTorso.new(window,pos)
   end
 
-  MOVE_AMOUNT = 5
+  def draw
+    @torso.draw
+  end
+
+  def update
+    @torso.update
+  end
 
   def move_up
     move_by vec2(0,-MOVE_AMOUNT)
@@ -24,13 +33,5 @@ class Ragdoll
 
   def move_by(vector = vec2(0,0))
     @torso.body.v+=vector
-  end
-
-  def draw
-    @torso.draw
-  end
-
-  def update
-    @torso.update
   end
 end

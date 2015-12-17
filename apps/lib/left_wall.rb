@@ -1,8 +1,8 @@
 class LeftWall
-  attr_reader :a, :b
-
   PADDING = 1
   INFINITY = 1.0/0
+
+  attr_reader :a, :b
 
   def initialize(width, height, window)
     @width = width
