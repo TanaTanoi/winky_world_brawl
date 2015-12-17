@@ -18,7 +18,7 @@ class Game < Gosu::Window
   LOGO_LOCATION = 'assets/logos/'
 
   attr_reader :width, :height
-attr_accessor :space
+  attr_accessor :space
   def initialize(width: 1280, height: 720, fullscreen: true)
     super(width, height, fullscreen)
     self.caption = GAME_NAME
@@ -30,17 +30,15 @@ attr_accessor :space
     @text_y = (2 * height) / 3
     @text_gap = 50
 
+    @space = CP::Space.new
     load_fonts
     load_images
     initialize_players
 
     @selected = 0
 
-    @space = CP::Space.new
-    @space.gravity = CP::Vec2.new(0,10)
-    #
-    # @player = RagdollPlayer.new(window: self, controls: PlayerControls::PLAYER1, pos: vec2(width/2, height/2))
-    # @player2 = RagdollPlayer.new(window: self, controls: PlayerControls::PLAYER2, pos: vec2(width/3, height/2))
+
+    # @space.gravity = CP::Vec2.new(0,10)
 
     @counter = 0
 
