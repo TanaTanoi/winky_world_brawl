@@ -2,7 +2,7 @@ class Player
   SPRITE_LOCATION  = 'assets/sprites/'
   WHITE = Gosu::Color.argb(0xff_ffffff)
 
-  attr_reader :ragdoll, :score
+  attr_reader :ragdoll, :score, :id
 
   def self.load_images(window, id)
     [

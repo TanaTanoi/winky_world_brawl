@@ -58,12 +58,15 @@ class Game < Gosu::Window
   end
 
   def update
-    if @game_state == GameState::GAME
+    check_for_winner
+    if @game_state == GameState::GAME || @game_state == GameState::GAME_OVER
       @hill.update
-      @players.each do |player|
-        player.update
-        respawn_player(player) if out_of_bounds?(player)
-        player.add_score(10) if player_on_hill?(player)
+      if @game_state == GameState::GAME
+        @players.each do |player|
+          player.update
+          respawn_player(player) if out_of_bounds?(player)
+          player.add_score(10) if player_on_hill?(player)
+        end
       end
 
       @space.step((1.0/60.0))
@@ -75,6 +78,9 @@ class Game < Gosu::Window
 
     if @game_state == GameState::GAME
       draw_game
+    elsif @game_state == GameState::GAME_OVER
+      draw_game
+      draw_game_over
     else
       draw_menu
     end
@@ -109,6 +115,8 @@ class Game < Gosu::Window
 
   def load_fonts
     @font = Gosu::Font.new(self, FONT_LOCATION + "block_font.ttf", 25)
+    @menu_font = Gosu::Font.new(self, FONT_LOCATION + "block_font.ttf", 50)
+    @winning_font = Gosu::Font.new(self, FONT_LOCATION + "block_font.ttf", 80)
   end
 
   def load_images
@@ -153,10 +161,23 @@ class Game < Gosu::Window
       draw_laser(player.ragdoll.body.p, @hill.p) if player_on_hill?(player)
       player.draw
     end
+
+    @font.draw("Esc to quit", 20, @height - 40, ZOrder::UI)
+  end
+
+  def draw_game_over
+    @winning_font.draw("Player#{@winning_player.id} has won!", (@width / 4), 100, ZOrder::UI)
   end
 
   def draw_laser(vec_a, vec_b, color_a = GREEN, color_b = GREEN)
     Gosu::draw_line(vec_a.x, vec_a.y, color_a, vec_b.x, vec_b.y, color_b, ZOrder::Player)
+  end
+
+  def check_for_winner
+    if @players.any? { |p| p.score >= 500 }
+      @winning_player = @players.detect { |p| p.score >= 500 }
+      @game_state = GameState::GAME_OVER
+    end
   end
 
   def player_on_hill?(player)
@@ -174,11 +195,11 @@ class Game < Gosu::Window
 
   def draw_menu
     draw_image_rect(0, 0, @width, @height, @background_image, ZOrder::Background)
-    @menu_logo.draw_rot(@width / 2, 120, ZOrder::UI, 0)
+    @menu_logo.draw_rot(@width / 2, 200, ZOrder::UI, 0)
 
     MENU_OPTIONS.size.times do |i|
       color = option_selected(i) ? SELECTED_COLOR : DEFAULT_COLOR
-      @font.draw_rel(MENU_OPTIONS[i], @text_x, @text_y + i * @text_gap, ZOrder::UI, 0.5, 0.5, 1, 1, color)
+      @menu_font.draw_rel(MENU_OPTIONS[i], @text_x, @text_y + i * @text_gap * 2, ZOrder::UI, 0.5, 0.5, 1, 1, color)
     end
   end
 
