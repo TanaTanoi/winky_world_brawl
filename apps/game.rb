@@ -3,7 +3,8 @@ require_relative 'lib/player'
 require_relative 'lib/zorder'
 require_relative 'lib/gamestate'
 require_relative 'lib/playercontrols'
-require_relative 'lib/floor'
+require_relative 'lib/horizontal_boundary'
+require_relative 'lib/vertical_boundary'
 require_relative 'lib/king_hill'
 
 class Game < Gosu::Window
@@ -35,7 +36,10 @@ class Game < Gosu::Window
     @text_gap = 50
     @space = CP::Space.new
 
-    @floor = Floor.new(SCREEN_WIDTH, SCREEN_HEIGHT, self)
+    @floor = HorizontalBoundary.new(SCREEN_WIDTH, SCREEN_HEIGHT, self)
+    @ceiling = HorizontalBoundary.new(SCREEN_WIDTH, 1, self)
+    @left_wall = VerticalBoundary.new(1, SCREEN_HEIGHT, self)
+    @right_wall = VerticalBoundary.new(SCREEN_WIDTH, SCREEN_HEIGHT, self)
 
     load_fonts
     load_images
@@ -62,6 +66,9 @@ class Game < Gosu::Window
 
   def draw
     @floor.draw
+    @ceiling.draw
+    @left_wall.draw
+    @right_wall.draw
     if @game_state == GameState::GAME
       @font.draw("Some Text", @text_x - @width / 8, 0, ZOrder::UI)
       draw_image_rect(0, 0, @width, @height, @background_image, ZOrder::Background)

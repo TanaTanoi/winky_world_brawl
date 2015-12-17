@@ -1,21 +1,21 @@
-class Floor
+class VerticalBoundary
   attr_reader :a, :b
 
   PADDING = 1
   INFINITY = 1.0/0
 
-  def initialize(width, height, window)
-    @width = width
-    @height = height
+  def initialize(x, y, window)
+    @x = x
+    @y = y
     @window = window
     @color = Gosu::Color.argb(0xff_ffffff)
 
     @a = CP::Vec2.new(0,0)
-    @b = CP::Vec2.new(@width - (PADDING * 2), 0)
+    @b = CP::Vec2.new(0, @y)
 
     # CHIPMUNK BODY
     @body = CP::Body.new(INFINITY, INFINITY)
-    @body.p = CP::Vec2.new(PADDING, @height - PADDING)
+    @body.p = CP::Vec2.new(@x, PADDING)
     @body.v = CP::Vec2.new(0, 0)
 
     # CHIPMUNK SHAPE
