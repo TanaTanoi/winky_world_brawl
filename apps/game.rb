@@ -4,6 +4,7 @@ require_relative 'lib/ragdoll_player'
 require_relative 'lib/zorder'
 require_relative 'lib/gamestate'
 require_relative 'lib/playercontrols'
+require_relative 'lib/floor'
 
 class Game < Gosu::Window
   GAME_NAME = 'Winky World Brawl'
@@ -12,6 +13,8 @@ class Game < Gosu::Window
   SELECTED_COLOR = 0xfff4cc00
   DEFAULT_COLOR = 0xffffffff
   WHITE = Gosu::Color.argb(0xff_ffffff)
+  SCREEN_WIDTH = 1280
+  SCREEN_HEIGHT = 720
 
   FONT_LOCATION = 'assets/fonts/'
   BACKGROUND_LOCATION = 'assets/backgrounds/'
@@ -19,7 +22,7 @@ class Game < Gosu::Window
 
   attr_reader :width, :height
   attr_accessor :space
-  def initialize(width: 1280, height: 720, fullscreen: true)
+  def initialize(width: SCREEN_WIDTH, height: SCREEN_HEIGHT, fullscreen: true)
     super(width, height, fullscreen)
     self.caption = GAME_NAME
 
@@ -29,8 +32,10 @@ class Game < Gosu::Window
     @text_x = @width / 2
     @text_y = (2 * height) / 3
     @text_gap = 50
-
     @space = CP::Space.new
+
+    @floor = Floor.new(SCREEN_WIDTH, SCREEN_HEIGHT, self)
+
     load_fonts
     load_images
     initialize_players
@@ -52,6 +57,7 @@ class Game < Gosu::Window
   end
 
   def draw
+    @floor.draw
     if @game_state == GameState::GAME
       @font.draw("Some Text", @text_x - @width / 8, 0, ZOrder::UI )
       draw_image_rect(0, 0, @width, @height, @background_image, ZOrder::Background)
