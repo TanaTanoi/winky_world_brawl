@@ -69,6 +69,7 @@ class Game < Gosu::Window
     @ceiling.draw
     @left_wall.draw
     @right_wall.draw
+
     if @game_state == GameState::GAME
       @font.draw("Some Text", @text_x - @width / 8, 0, ZOrder::UI)
       draw_image_rect(0, 0, @width, @height, @background_image, ZOrder::Background)

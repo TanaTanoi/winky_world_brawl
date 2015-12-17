@@ -13,11 +13,6 @@ class Player
     @window = window
     @controls = controls
 
-    @direction = 0 # 0 => up, 1 => right, 2 => down, 3 => left
-
-    @x = window.width / 2
-    @y = window.height / 2
-
     @ragdoll = Ragdoll.new(window, pos)
   end
 
@@ -55,4 +50,3 @@ class Player
       @ragdoll.move_down
   end
 end
-
