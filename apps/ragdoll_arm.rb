@@ -32,7 +32,6 @@ class RagdollArm
   end
 
   def update
-
   end
 
   def draw
@@ -51,9 +50,4 @@ class RagdollArm
   def bottom_right
     [@body.pos.x+ARM_WIDTH/2,@body.pos.y+ARM_HEIGHT/2]
   end
-
-
-
-
-
 end

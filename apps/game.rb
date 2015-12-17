@@ -37,7 +37,6 @@ class Game < Gosu::Window
 
     @selected = 0
 
-
     # @space.gravity = CP::Vec2.new(0,10)
 
     @counter = 0

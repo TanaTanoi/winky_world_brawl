@@ -1,4 +1,3 @@
-
 class Ragdoll
   attr_accessor :torso
   def initialize(window, pos)
@@ -27,7 +26,6 @@ class Ragdoll
     @torso.body.v+=vector
   end
 
-
   def draw
     @torso.draw
   end
@@ -35,5 +33,4 @@ class Ragdoll
   def update
     @torso.update
   end
-
 end

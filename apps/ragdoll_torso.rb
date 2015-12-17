@@ -66,8 +66,6 @@ class RagdollTorso
     @window.space.add_constraint(@right_arm_pivot)
   end
 
-
-
   # def draw
   #   puts @left_arm_pivot.inspect
   #   x1, y1 = top_left
