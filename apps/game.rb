@@ -18,6 +18,8 @@ class Game < Gosu::Window
   SCREEN_WIDTH = 1280
   SCREEN_HEIGHT = 720
 
+  WINNING_SCORE = 15000
+
   FONT_LOCATION = 'assets/fonts/'
   BACKGROUND_LOCATION = 'assets/backgrounds/'
   LOGO_LOCATION = 'assets/logos/'
@@ -174,8 +176,8 @@ class Game < Gosu::Window
   end
 
   def check_for_winner
-    if @players.any? { |p| p.score >= 500 }
-      @winning_player = @players.detect { |p| p.score >= 500 }
+    if @players.any? { |p| p.score >= WINNING_SCORE }
+      @winning_player = @players.detect { |p| p.score >= WINNING_SCORE }
       @game_state = GameState::GAME_OVER
     end
   end
