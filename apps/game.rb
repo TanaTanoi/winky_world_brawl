@@ -34,7 +34,7 @@ class Game < Gosu::Window
     @fullscreen = fullscreen
     @text_x = @width / 2
     @text_y = (2 * height) / 3
-    @text_gap = 50
+    @text_gap = 25
     @space = CP::Space.new
 
     @floor = HorizontalBoundary.new(SCREEN_WIDTH, SCREEN_HEIGHT, self)
@@ -63,39 +63,20 @@ class Game < Gosu::Window
       @players.each do |player|
         player.update
         respawn_player(player) if out_of_bounds?(player)
+        player.add_score(10) if player_on_hill?(player)
       end
+
       @space.step((1.0/60.0))
     end
   end
 
-  def draw_laser(vec_a, vec_b, color_a = GREEN, color_b = GREEN)
-    if vec_a.near?(vec_b, 200)
-      Gosu::draw_line(vec_a.x, vec_a.y, color_a, vec_b.x, vec_b.y, color_b, ZOrder::Player)
-    end
-  end
-
   def draw
-    @floor.draw
-    @ceiling.draw
-    @left_wall.draw
-    @right_wall.draw
+    draw_bounds
 
     if @game_state == GameState::GAME
-      @font.draw("ESC to Quit", @text_x - @width / 8, 0, ZOrder::UI)
-      draw_image_rect(0, 0, @width, @height, @background_image, ZOrder::Background)
-      @hill.draw
-      @players.each do |player|
-        draw_laser(player.ragdoll.body.p, @hill.p)
-        player.draw
-      end
+      draw_game
     else
-      draw_image_rect(0, 0, @width, @height, @background_image, ZOrder::Background)
-      @menu_logo.draw_rot(@width / 2, 120, ZOrder::UI, 0)
-
-      MENU_OPTIONS.size.times do |i|
-        color = option_selected(i) ? SELECTED_COLOR : DEFAULT_COLOR
-        @font.draw_rel(MENU_OPTIONS[i], @text_x, @text_y + i * @text_gap, ZOrder::UI, 0.5, 0.5, 1, 1, color)
-      end
+      draw_menu
     end
   end
 
@@ -127,7 +108,7 @@ class Game < Gosu::Window
   end
 
   def load_fonts
-    @font = Gosu::Font.new(self, FONT_LOCATION + "block_font.ttf", 50)
+    @font = Gosu::Font.new(self, FONT_LOCATION + "block_font.ttf", 25)
   end
 
   def load_images
@@ -154,6 +135,50 @@ class Game < Gosu::Window
     when "New Game" then @game_state = GameState::GAME
     when "Credits" then puts "Credits"
     when "Quit" then close
+    end
+  end
+
+  def draw_bounds
+    @floor.draw
+    @ceiling.draw
+    @left_wall.draw
+    @right_wall.draw
+  end
+
+  def draw_game
+    draw_scoreboard
+    draw_image_rect(0, 0, @width, @height, @background_image, ZOrder::Background)
+    @hill.draw
+    @players.each do |player|
+      draw_laser(player.ragdoll.body.p, @hill.p) if player_on_hill?(player)
+      player.draw
+    end
+  end
+
+  def draw_laser(vec_a, vec_b, color_a = GREEN, color_b = GREEN)
+    Gosu::draw_line(vec_a.x, vec_a.y, color_a, vec_b.x, vec_b.y, color_b, ZOrder::Player)
+  end
+
+  def player_on_hill?(player)
+    player.ragdoll.body.p.near?(@hill.p, 200)
+  end
+
+  def draw_scoreboard
+    x_offset = 20
+    y_offset = @text_gap
+    @font.draw("Scoreboard", x_offset, 5, ZOrder::UI)
+    @players.size.times do |i|
+      @font.draw("Player#{i + 1}: #{@players[i].score}", x_offset, y_offset + i * @text_gap, ZOrder::UI)
+    end
+  end
+
+  def draw_menu
+    draw_image_rect(0, 0, @width, @height, @background_image, ZOrder::Background)
+    @menu_logo.draw_rot(@width / 2, 120, ZOrder::UI, 0)
+
+    MENU_OPTIONS.size.times do |i|
+      color = option_selected(i) ? SELECTED_COLOR : DEFAULT_COLOR
+      @font.draw_rel(MENU_OPTIONS[i], @text_x, @text_y + i * @text_gap, ZOrder::UI, 0.5, 0.5, 1, 1, color)
     end
   end
 

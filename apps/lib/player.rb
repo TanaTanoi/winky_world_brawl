@@ -2,7 +2,7 @@ class Player
   SPRITE_LOCATION  = 'assets/sprites/'
   WHITE = Gosu::Color.argb(0xff_ffffff)
 
-  attr_reader :ragdoll
+  attr_reader :ragdoll, :score
 
   def self.load_images(window, id)
     [
@@ -18,6 +18,7 @@ class Player
     @controls = controls
 
     @disabled = 0
+    @score = 0
 
     @ragdoll = Ragdoll.new(window, pos)
   end
@@ -41,6 +42,10 @@ class Player
 
   def disable(count)
     @disabled += count
+  end
+
+  def add_score(score)
+    @score += score
   end
 
   private

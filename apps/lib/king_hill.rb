@@ -1,6 +1,5 @@
 class KingHill
   SPRITE_LOCATION  = 'assets/sprites/hill.png'
-
   VELOCITY_RANGE = 1..5
 
   def self.load_image(window)
