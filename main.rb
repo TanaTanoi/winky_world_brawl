@@ -1,3 +1,4 @@
+require 'byebug'
 require_relative 'apps/game'
 require 'chipmunk'
 require_relative 'apps/ragdoll'

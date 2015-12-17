@@ -5,6 +5,7 @@ require_relative 'lib/zorder'
 require_relative 'lib/gamestate'
 require_relative 'lib/playercontrols'
 require_relative 'lib/floor'
+require_relative 'lib/king_hill'
 
 class Game < Gosu::Window
   GAME_NAME = 'Winky World Brawl'
@@ -22,6 +23,7 @@ class Game < Gosu::Window
 
   attr_reader :width, :height
   attr_accessor :space
+
   def initialize(width: SCREEN_WIDTH, height: SCREEN_HEIGHT, fullscreen: true)
     super(width, height, fullscreen)
     self.caption = GAME_NAME
@@ -40,6 +42,8 @@ class Game < Gosu::Window
     load_images
     initialize_players
 
+    @hill = KingHill.new(self)
+
     @selected = 0
 
     # @space.gravity = CP::Vec2.new(0,10)
@@ -51,6 +55,7 @@ class Game < Gosu::Window
 
   def update
     if @game_state == GameState::GAME
+      @hill.update
       @players.each(&:update)
       @space.step((1.0/60.0))
     end
@@ -59,8 +64,9 @@ class Game < Gosu::Window
   def draw
     @floor.draw
     if @game_state == GameState::GAME
-      @font.draw("Some Text", @text_x - @width / 8, 0, ZOrder::UI )
+      @font.draw("Some Text", @text_x - @width / 8, 0, ZOrder::UI)
       draw_image_rect(0, 0, @width, @height, @background_image, ZOrder::Background)
+      @hill.draw
       @players.each(&:draw)
     else
       draw_image_rect(0, 0, @width, @height, @background_image, ZOrder::Background)
