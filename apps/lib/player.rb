@@ -71,4 +71,3 @@ class Player
     @direction = 2
   end
 end
-

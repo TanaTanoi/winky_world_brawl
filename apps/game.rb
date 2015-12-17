@@ -1,5 +1,6 @@
 require 'gosu'
 require_relative 'lib/player'
+require_relative 'lib/ragdoll_player'
 require_relative 'lib/zorder'
 require_relative 'lib/gamestate'
 require_relative 'lib/playercontrols'
@@ -17,7 +18,7 @@ class Game < Gosu::Window
   LOGO_LOCATION = 'assets/logos/'
 
   attr_reader :width, :height
-
+attr_accessor :space
   def initialize(width: 1280, height: 720, fullscreen: true)
     super(width, height, fullscreen)
     self.caption = GAME_NAME
@@ -35,12 +36,21 @@ class Game < Gosu::Window
 
     @selected = 0
 
+    @space = CP::Space.new
+    @space.gravity = CP::Vec2.new(0,10)
+    #
+    # @player = RagdollPlayer.new(window: self, controls: PlayerControls::PLAYER1, pos: vec2(width/2, height/2))
+    # @player2 = RagdollPlayer.new(window: self, controls: PlayerControls::PLAYER2, pos: vec2(width/3, height/2))
+
+    @counter = 0
+
     @game_state = GameState::MENU
   end
 
   def update
     if @game_state == GameState::GAME
       @players.each(&:update)
+      @space.step((1.0/60.0))
     end
   end
 
@@ -86,8 +96,8 @@ class Game < Gosu::Window
 
   def initialize_players
     @players = [
-      Player.new(window: self, controls: PlayerControls::PLAYER1),
-      Player.new(window: self, controls: PlayerControls::PLAYER2)
+      RagdollPlayer.new(window: self, controls: PlayerControls::PLAYER1, pos: vec2(width/3, height/2)),
+      RagdollPlayer.new(window: self, controls: PlayerControls::PLAYER2, pos: vec2(width/2, height/2))
     ]
   end
 
