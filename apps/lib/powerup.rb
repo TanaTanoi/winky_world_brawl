@@ -3,7 +3,7 @@ class Powerup
   BOMB_RANGE = (500..1000)
   BONUS_POINTS_RANGE = (500..1000)
   RANDOM_NEGATIVE_ARRAY = [-1, 1]
-
+  POWERUP_DURAITON = 8
   POWERUP_SPRITES = {
     bomb: "bomb.png",
     shield: "shield.png",
@@ -52,12 +52,17 @@ class Powerup
   end
 
   def shield(player)
+    player.ragdoll.body.m = 50
+    Thread.new{
+      sleep POWERUP_DURAITON
+      player.ragdoll.body.m = 1
+    }
     @window.generate_effect(:shield, @pos)
   end
 
   def bonus_points(player)
-      player.add_score(rand(SCORE_RANGE))
-      @window.generate_effect(:money, @pos)
+      player.add_score(rand(BONUS_POINTS_RANGE))
+      # @window.generate_effect(:money, @pos)
   end
 
   def point_range(player)
