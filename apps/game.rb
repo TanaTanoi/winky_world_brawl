@@ -20,6 +20,8 @@ class Game < Gosu::Window
 
   WINNING_SCORE = 15000
 
+  POWERUP_SPAWN_FREQUENCY = 4
+
   FONT_LOCATION = 'assets/fonts/'
   BACKGROUND_LOCATION = 'assets/backgrounds/'
   LOGO_LOCATION = 'assets/logos/'
@@ -30,7 +32,7 @@ class Game < Gosu::Window
   def initialize(width: SCREEN_WIDTH, height: SCREEN_HEIGHT, fullscreen: true)
     super(width, height, fullscreen)
     self.caption = GAME_NAME
-
+    @time = Time.now
     @width = width
     @height = height
     @fullscreen = fullscreen
@@ -67,9 +69,17 @@ class Game < Gosu::Window
           player.add_score(10) if player_on_hill?(player)
         end
         check_powerup_collision
+        create_powerup if powerup_time_elapsed?
       end
 
       @space.step((1.0/60.0))
+    end
+  end
+
+  def powerup_time_elapsed?
+    if (Time.now - @time) > POWERUP_SPAWN_FREQUENCY
+      @time = Time.now
+      true
     end
   end
 
@@ -149,6 +159,13 @@ class Game < Gosu::Window
     end
   end
 
+  def create_powerup(pos: random_position, type: Powerup::POWERUPS.sample)
+    @powerups.push Powerup.new(self, pos, power: type)
+  end
+
+  def random_position
+    vec2(rand(0..@width),rand(0..@height))
+  end
   def check_powerup_collision
     @players.each do |player|
       @powerups.map! do |pu|
