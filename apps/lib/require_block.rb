@@ -1,0 +1,8 @@
+require_relative 'player'
+require_relative 'zorder'
+require_relative 'game_state'
+require_relative 'player_controls'
+require_relative 'horizontal_boundary'
+require_relative 'vertical_boundary'
+require_relative 'king_hill'
+require_relative 'powerup'
