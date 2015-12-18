@@ -2,13 +2,13 @@ class Powerup
   SPRITE_LOCATION  = 'assets/sprites/'
   BOMB_RANGE = (500..1000)
   RANDOM_NEGATIVE_ARRAY = [-1, 1]
+
   POWERUP_SPRITES = {
     bomb: "bomb.png",
     shield: "shield.png"
   }
 
   POWERUPS = POWERUP_SPRITES.map { |k,v| k }
-
 
   def self.load_image(window)
     @powerup_images ||= Hash[self.powerup_images_array(window)]
@@ -46,7 +46,7 @@ class Powerup
 
   def bomb(player)
     player.ragdoll.body.v = vec2(rand(BOMB_RANGE) * RANDOM_NEGATIVE_ARRAY.sample, rand(BOMB_RANGE) * RANDOM_NEGATIVE_ARRAY.sample)
-    # @window.generate_effect(:explosion, @pos)
+    @window.generate_effect(:explosion, @pos)
   end
 
   def shield(player)
@@ -67,5 +67,4 @@ class Powerup
   def half_size
     @size/2
   end
-
 end

@@ -6,6 +6,7 @@ require_relative 'lib/player_controls'
 require_relative 'lib/horizontal_boundary'
 require_relative 'lib/vertical_boundary'
 require_relative 'lib/king_hill'
+require_relative 'lib/effect'
 
 class Game < Gosu::Window
   GAME_NAME = 'Winky World Brawl'
@@ -40,7 +41,10 @@ class Game < Gosu::Window
     @text_y = (2 * height) / 3
     @text_gap = 25
     @space = CP::Space.new
+
     @powerups = [Powerup.new(self,vec2(300,300))]
+    @effects = []
+
     @floor = HorizontalBoundary.new(SCREEN_WIDTH, SCREEN_HEIGHT, self)
     @ceiling = HorizontalBoundary.new(SCREEN_WIDTH, 1, self)
     @left_wall = VerticalBoundary.new(1, SCREEN_HEIGHT, self)
@@ -61,6 +65,10 @@ class Game < Gosu::Window
     check_for_winner
     if @game_state == GameState::GAME || @game_state == GameState::GAME_OVER
       @hill.update
+
+      @effects.each(&:update)
+      cleanup_effects
+
       if @game_state == GameState::GAME
 
         @players.each do |player|
@@ -113,6 +121,10 @@ class Game < Gosu::Window
 
   def draw_image_rect(x1, y1, x2, y2, image, z_index, color = WHITE)
     image.draw_as_quad(x1, y1, color, x2, y1, color, x2, y2, color, x1, y2, color, z_index)
+  end
+
+  def generate_effect(type, pos)
+    @effects << Effect.new(type: type, pos: pos, window: self)
   end
 
   private
@@ -196,6 +208,8 @@ class Game < Gosu::Window
       player.draw
     end
 
+    @effects.each(&:draw)
+
     @font.draw("Esc to quit", 20, @height - 40, ZOrder::UI)
   end
 
@@ -250,5 +264,9 @@ class Game < Gosu::Window
     player.ragdoll.body.v = CP::Vec2::ZERO
     player.ragdoll.body.a = 0
     player.disable(200)
+  end
+
+  def cleanup_effects
+    @effects.reject { |e| e.decay <= 0 }
   end
 end
