@@ -52,11 +52,11 @@ class Powerup
   end
 
   def shield(player)
-    player.ragdoll.body.m = 50
+    player.ragdoll.body.m+= 50
     player.effects[:shield] = true
     Thread.new{
       sleep POWERUP_DURAITON
-      player.ragdoll.body.m = 1
+      player.ragdoll.body.m-= 50
       player.effects[:shield] = false
     }
 

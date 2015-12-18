@@ -43,7 +43,7 @@ class Game < Gosu::Window
     @text_gap = 25
     @space = CP::Space.new
 
-    @powerups = [Powerup.new(self,vec2(300,300))]
+    @powerups = []
     @effects = []
 
     @floor = HorizontalBoundary.new(@width, @height, self)
@@ -248,7 +248,7 @@ class Game < Gosu::Window
   end
 
   def player_on_hill?(player)
-    player.ragdoll.body.p.near?(@hill.p, 150)
+    player.ragdoll.body.p.near?(@hill.p, 100)
   end
 
   def draw_scoreboard
