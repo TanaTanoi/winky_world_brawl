@@ -11,7 +11,7 @@ class Player
     ]
   end
 
-  def initialize(window: window, controls: controls, pos: pos, id: id)
+  def initialize(window:, controls:, pos:, id:)
     @player_image, @disabled_image = self.class.load_images(window, id)
     @id = id
     @window = window

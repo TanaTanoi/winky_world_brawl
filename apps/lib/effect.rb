@@ -7,7 +7,7 @@ class Effect
     @powerup_images = Gosu::Image.new(window, EFFECT_LOCATION + type + ".png", false)
   end
 
-  def initialize(type: type, pos: pos, window: window)
+  def initialize(type:, pos:, window:)
     @pos = pos
     @type = type
     @window = window
