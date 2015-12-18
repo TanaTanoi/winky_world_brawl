@@ -52,6 +52,7 @@ class Powerup
   end
 
   def shield(player)
+    @window.generate_effect(:shield, @pos)
   end
 
   def bonus_points(player)

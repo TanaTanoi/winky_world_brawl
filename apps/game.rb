@@ -26,6 +26,7 @@ class Game < Gosu::Window
   FONT_LOCATION = 'assets/fonts/'
   BACKGROUND_LOCATION = 'assets/backgrounds/'
   LOGO_LOCATION = 'assets/logos/'
+  AUDIO_LOCATION = 'assets/audio/'
 
   attr_reader :width, :height
   attr_accessor :space
@@ -59,10 +60,15 @@ class Game < Gosu::Window
     @selected = 0
 
     @game_state = GameState::MENU
+
+    @music = Gosu::Song.new(AUDIO_LOCATION + "music.wav").play
   end
 
   def update
-    check_for_winner
+    if @game_state == GameState::GAME
+      check_for_winner
+    end
+
     if @game_state == GameState::GAME || @game_state == GameState::GAME_OVER
       @hill.update
 
@@ -189,6 +195,7 @@ class Game < Gosu::Window
   def random_position
     vec2(rand(0..@width),rand(0..@height))
   end
+
   def check_powerup_collision
     @players.each do |player|
       @powerups.map! do |pu|
@@ -236,6 +243,7 @@ class Game < Gosu::Window
     if @players.any? { |p| p.score >= WINNING_SCORE }
       @winning_player = @players.detect { |p| p.score >= WINNING_SCORE }
       @game_state = GameState::GAME_OVER
+      @music = Gosu::Song.new(AUDIO_LOCATION + "over.ogg").play
     end
   end
 
