@@ -1,8 +1,8 @@
 class Player
   SPRITE_LOCATION  = 'assets/sprites/'
   WHITE = Gosu::Color.argb(0xff_ffffff)
-
-  attr_reader :ragdoll, :score, :id
+  GREY =  Gosu::Color.argb(0xff_999999)
+  attr_reader :ragdoll, :score, :id, :effects
 
   def self.load_images(window, id)
     [
@@ -16,23 +16,22 @@ class Player
     @id = id
     @window = window
     @controls = controls
-
-    @disabled = 0
+    @effects = { disabled: 0, shield: false }
     @score = 0
-
     @ragdoll = Ragdoll.new(window, pos)
   end
 
   def draw
-    draw_player(@player_image)
+    color = ( @effects[:shield] ? GREY : WHITE )
+    draw_player(@player_image, color)
 
-    if @disabled > 0
+    if @effects[:disabled] > 0
       draw_player(@disabled_image)
     end
   end
 
   def update
-    if @disabled > 0
+    if @effects[:disabled] > 0
       disabled_tick
     else
       move
@@ -41,7 +40,7 @@ class Player
   end
 
   def disable(count)
-    @disabled += count
+    @effects[:disabled] += count
   end
 
   def add_score(score)
@@ -50,12 +49,12 @@ class Player
 
   private
 
-  def draw_player(image)
+  def draw_player(image, color = WHITE)
     top_left, top_right, bottom_left, bottom_right = @ragdoll.rotate
 
     # Gotta draw things back to front because we're in space so that makes sense right?
-    image.draw_as_quad(bottom_left.x, bottom_left.y, WHITE, bottom_right.x, bottom_right.y, WHITE,
-                              top_left.x, top_left.y, WHITE, top_right.x, top_right.y, WHITE, 1)
+    image.draw_as_quad(bottom_left.x, bottom_left.y, color, bottom_right.x, bottom_right.y, color,
+                              top_left.x, top_left.y, color, top_right.x, top_right.y, color, 1)
   end
 
   def move
@@ -82,6 +81,6 @@ class Player
   end
 
   def disabled_tick
-    @disabled -= 1
+    @effects[:disabled] -= 1
   end
 end
