@@ -1,8 +1,8 @@
 class Ragdoll
-  MOVE_AMOUNT = 5
+  MOVE_AMOUNT = 8
   BODY_SIZE = 40
   BODY_MASS = 1
-  BODY_INERTIA = 100
+  BODY_INERTIA = 40
 
   attr_accessor :shape, :body
 

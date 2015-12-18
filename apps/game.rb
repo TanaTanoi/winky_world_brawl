@@ -248,7 +248,7 @@ class Game < Gosu::Window
   end
 
   def player_on_hill?(player)
-    player.ragdoll.body.p.near?(@hill.p, 200)
+    player.ragdoll.body.p.near?(@hill.p, 150)
   end
 
   def draw_scoreboard

@@ -22,7 +22,7 @@ class Powerup
      end
   end
 
-  def initialize(window, pos, power: POWERUPS.sample, size: 50)
+  def initialize(window, pos, power: POWERUPS.sample, size: 60)
     @powerup_images = self.class.load_image(window)
     @window = window
     @pos = pos

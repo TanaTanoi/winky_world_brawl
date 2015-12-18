@@ -52,7 +52,7 @@ class Player
   def draw_player(image, color = WHITE)
     top_left, top_right, bottom_left, bottom_right = @ragdoll.rotate
 
-    # Gotta draw things back to front because we're in space so that makes sense right?
+    # Gotta draw things back to front because we're in space so that makes sense right? TODO prove this in real life
     image.draw_as_quad(bottom_left.x, bottom_left.y, color, bottom_right.x, bottom_right.y, color,
                               top_left.x, top_left.y, color, top_right.x, top_right.y, color, 1)
   end
