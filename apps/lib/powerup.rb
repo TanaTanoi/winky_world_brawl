@@ -1,11 +1,13 @@
 class Powerup
   SPRITE_LOCATION  = 'assets/sprites/'
   BOMB_RANGE = (500..1000)
+  BONUS_POINTS_RANGE = (500..1000)
   RANDOM_NEGATIVE_ARRAY = [-1, 1]
 
   POWERUP_SPRITES = {
     bomb: "bomb.png",
-    shield: "shield.png"
+    shield: "shield.png",
+    bonus_points: "bonus_points.png"
   }
 
   POWERUPS = POWERUP_SPRITES.map { |k,v| k }
@@ -52,8 +54,9 @@ class Powerup
   def shield(player)
   end
 
-  def steal_points(player)
-
+  def bonus_points(player)
+      player.add_score(rand(SCORE_RANGE))
+      @window.generate_effect(:money, @pos)
   end
 
   def point_range(player)
