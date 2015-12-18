@@ -11,7 +11,7 @@ class Effect
     @pos = pos
     @type = type
     @window = window
-    if type != :shield
+    if type == :explosion
       @effect_image = self.class.load_image(window, type.to_s)
       @width = @effect_image.width
       @height = @effect_image.height
@@ -40,6 +40,8 @@ class Effect
       Gosu::Sample.new(EFFECT_LOCATION + "explosion.mp3").play
     when :shield
       Gosu::Sample.new(EFFECT_LOCATION + "shield.ogg").play
+    when :money
+      Gosu::Sample.new(EFFECT_LOCATION + "money.mp3").play
     end
   end
 

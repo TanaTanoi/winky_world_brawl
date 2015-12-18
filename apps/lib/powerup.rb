@@ -61,8 +61,8 @@ class Powerup
   end
 
   def bonus_points(player)
-      player.add_score(rand(BONUS_POINTS_RANGE))
-      # @window.generate_effect(:money, @pos)
+    player.add_score(rand(BONUS_POINTS_RANGE))
+    @window.generate_effect(:money, @pos)
   end
 
   def point_range(player)
