@@ -45,10 +45,10 @@ class Game < Gosu::Window
     @powerups = [Powerup.new(self,vec2(300,300))]
     @effects = []
 
-    @floor = HorizontalBoundary.new(SCREEN_WIDTH, SCREEN_HEIGHT, self)
-    @ceiling = HorizontalBoundary.new(SCREEN_WIDTH, 1, self)
-    @left_wall = VerticalBoundary.new(1, SCREEN_HEIGHT, self)
-    @right_wall = VerticalBoundary.new(SCREEN_WIDTH, SCREEN_HEIGHT, self)
+    @floor = HorizontalBoundary.new(@width, @height, self)
+    @ceiling = HorizontalBoundary.new(@width, 1, self)
+    @left_wall = VerticalBoundary.new(1, @height, self)
+    @right_wall = VerticalBoundary.new(@width, @height, self)
 
     load_fonts
     load_images
