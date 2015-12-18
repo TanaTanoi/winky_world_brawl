@@ -38,7 +38,7 @@ class Game < Gosu::Window
     @text_y = (2 * height) / 3
     @text_gap = 25
     @space = CP::Space.new
-
+    @powerups = [Powerup.new(self,vec2(300,300))]
     @floor = HorizontalBoundary.new(SCREEN_WIDTH, SCREEN_HEIGHT, self)
     @ceiling = HorizontalBoundary.new(SCREEN_WIDTH, 1, self)
     @left_wall = VerticalBoundary.new(1, SCREEN_HEIGHT, self)
@@ -60,11 +60,13 @@ class Game < Gosu::Window
     if @game_state == GameState::GAME || @game_state == GameState::GAME_OVER
       @hill.update
       if @game_state == GameState::GAME
+
         @players.each do |player|
           player.update
           respawn_player(player) if out_of_bounds?(player)
           player.add_score(10) if player_on_hill?(player)
         end
+        check_powerup_collision
       end
 
       @space.step((1.0/60.0))
@@ -83,6 +85,7 @@ class Game < Gosu::Window
       draw_menu
     end
   end
+
 
   def button_down(id)
     if id == Gosu::KbEscape
@@ -146,6 +149,19 @@ class Game < Gosu::Window
     end
   end
 
+  def check_powerup_collision
+    @players.each do |player|
+      @powerups.map! do |pu|
+        if pu.touching?(player)
+          pu.activate(player)
+          nil
+        else
+          pu
+        end
+      end.compact!
+    end
+  end
+
   def draw_bounds
     @floor.draw
     @ceiling.draw
@@ -157,6 +173,7 @@ class Game < Gosu::Window
     draw_scoreboard
     draw_image_rect(0, 0, @width, @height, @background_image, ZOrder::Background)
     @hill.draw
+    @powerups.each(&:draw)
     @players.each do |player|
       draw_laser(player.ragdoll.body.p, @hill.p) if player_on_hill?(player)
       player.draw
