@@ -104,7 +104,6 @@ class Game < Gosu::Window
     end
   end
 
-
   def button_down(id)
     if id == Gosu::KbEscape
       close
@@ -136,6 +135,18 @@ class Game < Gosu::Window
       Player.new(window: self, controls: PlayerControls::PLAYER3, pos: vec2(width/2, height/3), id: 3),
       Player.new(window: self, controls: PlayerControls::PLAYER4, pos: vec2(width/3, height/3), id: 4)
     ]
+  end
+
+  def default_position(player)
+    if player == @players[0]
+      vec2(width/3, height/2)
+    elsif player == @players[1]
+      vec2(width/2, height/2)
+    elsif player == @players[2]
+      vec2(width/2, height/3)
+    elsif player == @players[3]
+      vec2(width/3, height/3)
+    end
   end
 
   def load_fonts
@@ -260,7 +271,7 @@ class Game < Gosu::Window
   end
 
   def respawn_player(player)
-    player.ragdoll.body.p = vec2(@width/2, @height/2)
+    player.ragdoll.body.p = default_position(player)
     player.ragdoll.body.v = CP::Vec2::ZERO
     player.ragdoll.body.a = 0
     player.disable(200)
