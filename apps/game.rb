@@ -3,8 +3,7 @@ require_relative 'lib/player'
 require_relative 'lib/zorder'
 require_relative 'lib/game_state'
 require_relative 'lib/player_controls'
-require_relative 'lib/horizontal_boundary'
-require_relative 'lib/vertical_boundary'
+require_relative 'lib/boundary'
 require_relative 'lib/king_hill'
 require_relative 'lib/effect'
 
@@ -45,11 +44,12 @@ class Game < Gosu::Window
 
     @powerups = []
     @effects = []
-
-    @floor = HorizontalBoundary.new(@width, @height, self)
-    @ceiling = HorizontalBoundary.new(@width, 1, self)
-    @left_wall = VerticalBoundary.new(1, @height, self)
-    @right_wall = VerticalBoundary.new(@width, @height, self)
+    @bounderies = [
+      Boundary.new(0, 0, @width, 0, space),
+      Boundary.new(0, 0, 0, @height, space),
+      Boundary.new(0, @height, @width, @height, space),
+      Boundary.new(@width, 0, @width, @height, space)
+    ]
 
     load_fonts
     load_images
@@ -210,10 +210,9 @@ class Game < Gosu::Window
   end
 
   def draw_bounds
-    @floor.draw
-    @ceiling.draw
-    @left_wall.draw
-    @right_wall.draw
+    @bounderies.each do |b|
+      b.draw(self)
+    end
   end
 
   def draw_game
